@@ -27,4 +27,10 @@ router.route('/:id').put(async (req, res) => {
   return res.status(updatedUser.code).send(updatedUser.result);
 });
 
+router.route('/:id').delete(async (req, res) => {
+  const removedUser = await usersService.delete(req.params.id);
+
+  return res.status(removedUser.code).send(removedUser.result);
+});
+
 module.exports = router;

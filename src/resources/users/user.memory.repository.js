@@ -1,6 +1,6 @@
 const User = require('../users/user.model');
 
-const users = [];
+let users = [];
 
 const getAll = async () => {
   // TODO: mock implementation. should be replaced during task development
@@ -33,9 +33,7 @@ const create = async user => {
   }
   return {
     code: 400,
-    result: {
-      message: 'Bad request.'
-    }
+    result: 'Bad request.'
   };
 };
 const update = async (id, updateData) => {
@@ -57,8 +55,18 @@ const update = async (id, updateData) => {
   };
 };
 const remove = async id => {
-  // TODO: mock implementation. should be replaced during task development
-  return [id];
+  const index = users.findIndex(user => user.id === id);
+  if (index !== -1) {
+    users = [...users.slice(0, index), ...users.slice(index + 1)];
+    return {
+      code: 204,
+      result: '	The user has been deleted'
+    };
+  }
+  return {
+    code: 404,
+    result: 'User not found.'
+  };
 };
 
 module.exports = { getAll, getById, create, update, delete: remove };
