@@ -32,7 +32,7 @@ const create = async user => {
   }
   return {
     status: 400,
-    result: 'Bad request'
+    result: 'Bad request.'
   };
 };
 

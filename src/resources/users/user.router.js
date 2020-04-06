@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const User = require('./user.model');
 const usersService = require('./user.service');
+const tasksService = require('../tasks/task.service');
 
 router.route('/').get(async (req, res) => {
   const users = await usersService.getAll();
@@ -29,7 +30,9 @@ router.route('/:id').put(async (req, res) => {
 
 router.route('/:id').delete(async (req, res) => {
   const removedUser = await usersService.delete(req.params.id);
-
+  if (removedUser.status === 204) {
+    await tasksService.unassigneeUserTasks(req.params.id);
+  }
   return res.status(removedUser.status).json(removedUser.result);
 });
 
