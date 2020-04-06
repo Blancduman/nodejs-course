@@ -25,19 +25,11 @@ const getById = async (boardId, id) => {
 };
 
 const create = async (boardId, task) => {
-  // if (tasks.findIndex(t => t.title === task.title) === -1) {
-  // if (task.userId !== null && task.columnId !== null) {
   tasks.push({ ...task, boardId });
   return {
     status: 200,
     result: Task.toResponse(tasks[tasks.length - 1])
   };
-  // }
-  // }
-  // return {
-  //   status: 400,
-  //   result: 'Bad request.'
-  // };
 };
 
 const update = async (boardId, id, updateData) => {

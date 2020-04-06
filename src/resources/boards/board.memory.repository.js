@@ -3,7 +3,6 @@ const Board = require('./board.model');
 let boards = [];
 
 const getAll = async () => {
-  // TODO: mock implementation. should be replaced during task development
   return boards;
 };
 const getById = async id => {
