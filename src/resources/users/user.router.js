@@ -5,7 +5,26 @@ const usersService = require('./user.service');
 router.route('/').get(async (req, res) => {
   const users = await usersService.getAll();
   // map user fields to exclude secret fields like "password"
-  res.json(users.map(User.toResponse));
+  return res.json(users.map(User.toResponse));
+});
+
+router.route('/').post(async (req, res) => {
+  const newUser = new User(req.body);
+  const createdUser = await usersService.create(newUser);
+
+  return res.status(createdUser.code).send(createdUser.result);
+});
+
+router.route('/:id').get(async (req, res) => {
+  const getUser = await usersService.getById(req.params.id);
+
+  return res.status(getUser.code).send(getUser.result);
+});
+
+router.route('/:id').put(async (req, res) => {
+  const updatedUser = await usersService.update(req.params.id, req.body);
+
+  return res.status(updatedUser.code).send(updatedUser.result);
 });
 
 module.exports = router;
