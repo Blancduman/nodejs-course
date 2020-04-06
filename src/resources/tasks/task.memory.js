@@ -3,10 +3,12 @@ const Task = require('./task.model');
 let tasks = [];
 
 const getAll = async boardId => {
-  return tasks.filter(task => task.boardId === boardId);
+  const boardTasks = tasks.filter(task => task.boardId === boardId);
+  console.log(boardId, boardTasks.map(Task.toResponse), tasks);
+  return boardTasks.map(Task.toResponse);
 };
 
-const getById = async (id, boardId) => {
+const getById = async (boardId, id) => {
   const getTask = tasks.find(
     task => task.id === id && task.boardId === boardId
   );
@@ -22,21 +24,23 @@ const getById = async (id, boardId) => {
   };
 };
 
-const create = async task => {
-  if (tasks.findIndex(t => t.title === task.title) === -1) {
-    tasks.push({ ...task });
-    return {
-      status: 200,
-      result: Task.toResponse(task)
-    };
-  }
+const create = async (boardId, task) => {
+  // if (tasks.findIndex(t => t.title === task.title) === -1) {
+  // if (task.userId !== null && task.columnId !== null) {
+  tasks.push({ ...task, boardId });
   return {
-    status: 400,
-    result: 'Bad request.'
+    status: 200,
+    result: Task.toResponse(tasks[tasks.length - 1])
   };
+  // }
+  // }
+  // return {
+  //   status: 400,
+  //   result: 'Bad request.'
+  // };
 };
 
-const update = async (id, boardId, updateData) => {
+const update = async (boardId, id, updateData) => {
   const index = tasks.findIndex(t => t.id === id && t.boardId === boardId);
   if (index !== -1) {
     tasks[index] = {
@@ -54,7 +58,7 @@ const update = async (id, boardId, updateData) => {
     result: 'Bad request.'
   };
 };
-const remove = async (id, boardId) => {
+const remove = async (boardId, id) => {
   const index = tasks.findIndex(
     task => task.id === id && task.boardId === boardId
   );

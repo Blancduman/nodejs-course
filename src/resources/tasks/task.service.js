@@ -1,11 +1,11 @@
 const tasksRepo = require('./task.memory');
 
 const getAll = boardId => tasksRepo.getAll(boardId);
-const getById = (id, boardId) => tasksRepo.getById(id, boardId);
-const create = task => tasksRepo.create(task);
-const update = (id, boardId, updateData) =>
-  tasksRepo.update(id, boardId, updateData);
-const remove = (id, boardId) => tasksRepo.delete(id, boardId);
+const getById = (boardId, id) => tasksRepo.getById(boardId, id);
+const create = (boardId, task) => tasksRepo.create(boardId, task);
+const update = (boardId, id, updateData) =>
+  tasksRepo.update(boardId, id, updateData);
+const remove = (boardId, id) => tasksRepo.delete(boardId, id);
 const removeBoardTasks = boardId => tasksRepo.removeAllBoardTasks(boardId);
 const unassigneeUserTasks = userId => tasksRepo.unassigneeUserTasks(userId);
 

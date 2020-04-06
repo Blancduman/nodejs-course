@@ -24,7 +24,6 @@ const getById = async id => {
 const create = async user => {
   if (users.findIndex(u => u.login === user.login) === -1) {
     users.push({ ...user });
-    console.log(users);
     return {
       status: 200,
       result: User.toResponse(user)

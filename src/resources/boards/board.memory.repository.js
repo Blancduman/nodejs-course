@@ -21,16 +21,10 @@ const getById = async id => {
 };
 
 const create = async board => {
-  if (boards.findIndex(b => b.title === board.title) === -1) {
-    boards.push({ ...board });
-    return {
-      status: 200,
-      result: Board.toResponse(board)
-    };
-  }
+  boards.push({ ...board });
   return {
-    status: 400,
-    result: 'Bad request'
+    status: 200,
+    result: Board.toResponse(board)
   };
 };
 const update = async (id, updateData) => {
