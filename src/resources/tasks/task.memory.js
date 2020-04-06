@@ -4,7 +4,7 @@ let tasks = [];
 
 const getAll = async boardId => {
   const boardTasks = tasks.filter(task => task.boardId === boardId);
-  console.log(boardId, boardTasks.map(Task.toResponse), tasks);
+
   return boardTasks.map(Task.toResponse);
 };
 
