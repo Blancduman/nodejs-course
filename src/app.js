@@ -5,9 +5,10 @@ const YAML = require('yamljs');
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
 const { winston, morgan } = require('./startup/logging');
+const error = require('./middleware/error');
 
-process.on('uncaughtException', error => {
-  winston.error(`error: ${error.message}`);
+process.on('uncaughtException', err => {
+  winston.error(err);
 });
 
 process.on('unhandledRejection', rejection => {
@@ -23,9 +24,6 @@ app.use(morgan('dev'));
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.use('/', (req, res, next) => {
-  if (req.originalUrl !== '/users' || req.originalUrl !== '/boards') {
-    return next(new Error(require('http-status-codes').INTERNAL_SERVER_ERROR));
-  }
   if (req.originalUrl === '/') {
     res.send('Service is running!');
 
@@ -36,23 +34,8 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use((err, req, res, next) => {
-  if (err) {
-    const {
-      INTERNAL_SERVER_ERROR,
-      getStatusText
-    } = require('http-status-codes');
-    const { method, url, params, body } = req;
-    winston.error({ method, url, params, body });
-    res
-      .status(INTERNAL_SERVER_ERROR)
-      .send(getStatusText(INTERNAL_SERVER_ERROR));
-    return;
-  }
-  next();
-});
-
 app.use('/users', userRouter);
 app.use('/boards', boardRouter);
+app.use(error);
 
 module.exports = app;
