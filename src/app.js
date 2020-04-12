@@ -23,7 +23,7 @@ app.use(morgan('dev'));
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.use('/', (req, res, next) => {
-  if (req.originalUrl === '/users') {
+  if (req.originalUrl !== '/users' || req.originalUrl !== '/boards') {
     return next(new Error(require('http-status-codes').INTERNAL_SERVER_ERROR));
   }
   if (req.originalUrl === '/') {
