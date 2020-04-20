@@ -10,6 +10,7 @@ module.exports = () => {
       useFindAndModify: false
     })
     .then(() => {
+      mongoose.connection.db.dropDatabase();
       winston.info('Connected to db...');
     });
 };

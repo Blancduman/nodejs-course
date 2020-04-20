@@ -1,7 +1,10 @@
 const { Task } = require('./task.model');
 
 const getAll = async boardId => {
-  return await Task.find({ boardId }).map(bt => bt.toResponse());
+  const tasks = await Task.find({ boardId });
+  const preparedTasks = tasks.map(bt => bt.toResponse());
+
+  return preparedTasks;
 };
 
 const getById = async (boardId, id) => {

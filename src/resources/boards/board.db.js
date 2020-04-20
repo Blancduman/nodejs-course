@@ -1,10 +1,10 @@
 const { Board } = require('./board.model');
 
 const getAll = async () => {
-  return await Board.find({}).map(b => {
-    const a = b.toResponse();
-    return a;
-  });
+  const boards = await Board.find({});
+  const preparedBoards = boards.map(b => b.toResponse());
+
+  return preparedBoards;
 };
 const getById = async id => {
   const selectedBoard = await Board.findById(id);

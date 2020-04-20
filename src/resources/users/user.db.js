@@ -2,10 +2,7 @@ const { User } = require('../users/user.model');
 
 const getAll = async () => {
   const users = await User.find({});
-  const responseUsers = users.map(u => {
-    const ru = u.toResponse();
-    return ru;
-  });
+  const responseUsers = users.map(u => u.toResponse());
   return responseUsers;
 };
 
@@ -26,23 +23,19 @@ const getById = async id => {
 };
 
 const create = async user => {
-  try {
-    const createdUser = await new User({ ...user }).save();
+  const createdUser = await new User({ ...user }).save();
 
-    if (createdUser) {
-      return {
-        status: 200,
-        result: createdUser.toResponse()
-      };
-    }
-
+  if (createdUser) {
     return {
-      status: 400,
-      result: 'Bad request.'
+      status: 200,
+      result: createdUser.toResponse()
     };
-  } catch (ex) {
-    console.log(ex);
   }
+
+  return {
+    status: 400,
+    result: 'Bad request.'
+  };
 };
 
 const update = async (id, updateData) => {

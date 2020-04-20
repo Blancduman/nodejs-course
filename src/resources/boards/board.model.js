@@ -1,9 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const boardSchema = new Schema({
-  title: {
-    type: String
-  },
+  title: String,
   columns: Array
   // {
   //   // type: Schema.Types.ObjectId,
