@@ -1,17 +1,15 @@
 const router = require('express').Router();
-const User = require('./user.model');
 const usersService = require('./user.service');
 const tasksService = require('../tasks/task.service');
 
 router.route('/').get(async (req, res) => {
   const users = await usersService.getAll();
 
-  return res.json(users.map(User.toResponse));
+  return res.status(200).json(users);
 });
 
 router.route('/').post(async (req, res) => {
-  const newUser = new User(req.body);
-  const createdUser = await usersService.create(newUser);
+  const createdUser = await usersService.create(req.body);
 
   return res.status(createdUser.status).json(createdUser.result);
 });

@@ -1,18 +1,16 @@
 const router = require('express').Router();
-const Board = require('./board.model');
 const boardsService = require('./board.service');
-const Task = require('../tasks/task.model');
 const tasksService = require('../tasks/task.service');
 
 router.route('/').get(async (req, res) => {
   const boards = await boardsService.getAll();
+  console.log(boards);
 
-  res.json(boards.map(Board.toResponse));
+  res.status(200).json(boards);
 });
 
 router.route('/').post(async (req, res) => {
-  const newBoard = new Board(req.body);
-  const createdBoard = await boardsService.create(newBoard);
+  const createdBoard = await boardsService.create(req.body);
   res.status(createdBoard.status).json(createdBoard.result);
 });
 
@@ -36,12 +34,11 @@ router.route('/:boardId').delete(async (req, res) => {
 
 router.route('/:boardId/tasks').get(async (req, res) => {
   const tasks = await tasksService.getAll(req.params.boardId);
-  res.json(tasks.map(Task.toResponse));
+  res.status(200).json(tasks);
 });
 
 router.route('/:boardId/tasks').post(async (req, res) => {
-  const newTask = new Task(req.body);
-  const createdTask = await tasksService.create(req.params.boardId, newTask);
+  const createdTask = await tasksService.create(req.params.boardId, req.body);
   res.status(createdTask.status).json(createdTask.result);
 });
 

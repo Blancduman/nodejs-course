@@ -7,6 +7,8 @@ const boardRouter = require('./resources/boards/board.router');
 const { winston, morgan } = require('./startup/logging');
 const error = require('./middleware/error');
 
+require('./startup/db')();
+
 process.on('uncaughtException', err => {
   winston.error(err);
 });
