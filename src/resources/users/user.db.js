@@ -78,7 +78,13 @@ const remove = async id => {
 
 const postLogin = async ({ login, password }) => {
   const user = await User.findOne({ login });
-  if (!user || !user.comparePassword(password)) {
+  if (!user) {
+    return {
+      status: 403,
+      result: 'No user exist in this database, my boy.'
+    };
+  }
+  if (!user.comparePassword(password)) {
     return {
       status: 400,
       result: 'Invalid login or password.'
