@@ -76,4 +76,19 @@ const remove = async id => {
   };
 };
 
-module.exports = { getAll, getById, create, update, delete: remove };
+const postLogin = async ({ login, password }) => {
+  const user = await User.findOne({ login });
+  if (!user || !user.comparePassword(password)) {
+    return {
+      status: 400,
+      result: 'Invalid login or password.'
+    };
+  }
+  const token = user.generateAuthToken();
+  return {
+    status: 200,
+    result: { token }
+  };
+};
+
+module.exports = { getAll, getById, create, update, delete: remove, postLogin };

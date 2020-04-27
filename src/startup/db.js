@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { MONGO_CONNECTION_STRING } = require('../common/config');
 const { winston } = require('./logging');
+const { create } = require('../resources/users/user.service');
 
 module.exports = () => {
   mongoose
@@ -10,7 +11,9 @@ module.exports = () => {
       useFindAndModify: false
     })
     .then(() => {
-      mongoose.connection.db.dropDatabase();
       winston.info('Connected to db...');
+      mongoose.connection.db.dropDatabase().then(() => {
+        create({ name: 'admin', login: 'admin', password: 'admin' });
+      });
     });
 };

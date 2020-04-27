@@ -4,8 +4,10 @@ const path = require('path');
 const YAML = require('yamljs');
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
+const loginRouter = require('./resources/login/login.router');
 const { winston, morgan } = require('./startup/logging');
 const error = require('./middleware/error');
+const auth = require('./middleware/auth');
 
 require('./startup/db')();
 
@@ -36,8 +38,9 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use('/users', userRouter);
-app.use('/boards', boardRouter);
+app.use('/login', loginRouter);
+app.use('/users', auth, userRouter);
+app.use('/boards', auth, boardRouter);
 app.use(error);
 
 module.exports = app;
